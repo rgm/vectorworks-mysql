@@ -1,0 +1,49 @@
+PROCEDURE Main;
+
+  { ryan@ryanmccuaig.net // 20120525                                }
+  { test script for checking that an ODBC database connection works }
+
+CONST
+  kDatabaseName     = 'mysql-vw-test';
+  kDatabaseUser     = 'root';
+  kDatabasePassword = '';
+  kDatabaseSQLQuery = 'SELECT * FROM sheets';
+
+TYPE
+  SHEETDATA = STRUCTURE
+    sheet_number, sheet_name : STRING;
+  END;
+
+VAR
+  boo                 : BOOLEAN;
+  colCount, resultSet : LONGINT;
+  i                   : INTEGER;
+  colName, colValue   : DYNARRAY[] OF CHAR;
+  sheet               : SHEETDATA;
+
+BEGIN
+
+  boo := DBSQLExecuteDSN(
+    kDatabaseName,
+    kDatabaseUser,
+    kDatabasePassword,
+    kDatabaseSQLQuery,
+    colCount,
+    resultSet);
+
+  REPEAT
+    FOR i := 1 to colCount do BEGIN
+      boo := DBSQLExecuteGet(resultSet, i, colName, colValue);
+      IF (colName = 'sheet_number') THEN BEGIN
+        sheet.sheet_number := colValue;
+      END ELSE IF (colName = 'sheet_name') THEN BEGIN
+        sheet.sheet_name := colValue;
+      END;
+    END;
+    AlrtDialog(Concat('sheet number ', sheet.sheet_number, ' is named ', sheet.sheet_name));
+  UNTIL NOT DBSQLExecuteNext(resultSet);
+
+  DBSQLExecuteDelete(resultSet);
+
+END;
+Run(Main);

@@ -1,0 +1,5 @@
+#!/bin/sh
+set -e
+DBNAME=$(whoami)
+echo "  + adding sample data to database '$DBNAME'"
+mysql -u root $DBNAME < sheets.sql

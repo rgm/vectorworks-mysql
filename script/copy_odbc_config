@@ -1,0 +1,24 @@
+#!/bin/sh
+set -e
+DBNAME=$(whoami)
+PWD=$(pwd)
+DST=~/Library/ODBC
+ODBC=odbc.ini
+ODBCINST=odbcinst.ini
+echo "  + copying ODBC config files to ~/Library/ODBC"
+if [ -f "$DST/$ODBC" ]
+then
+  echo "  x Error: '$DST/$ODBC' exists; either move or delete it"
+  exit 1
+fi
+if [ -f "$DST/$ODBCINST" ]
+then
+  echo "  x Error: '$DST/$ODBCINST' exists; either move or delete it"
+  exit 1
+fi
+if [ ! -d "$DST" ]
+then
+  mkdir "$DST"
+fi
+cat $ODBC | sed "s/WHOAMI/$DBNAME/g;s:PWD:${PWD}:g" > "$DST/$ODBC"
+cp odbcinst.ini "$DST"

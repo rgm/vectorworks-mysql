@@ -12,5 +12,6 @@ Starting out:
     # create sample database and set it up as an ODBC datasource
     $ script/bootstrap
 
-    # hit menu Tools > Database > Manage Databases... in Vectorworks
+    # Fire up Vectorworks and connect through 'Tools > Database > Manage
+    # Databases...'
 

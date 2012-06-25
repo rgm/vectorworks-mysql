@@ -9,7 +9,7 @@ Starting out:
 
     # install mysql and its odbc connector
     $ brew install mysql --universal
-    $ brew install rgm/alt/mysql-connector-odbc --universal
+    $ brew install mysql-connector-odbc --universal
 
     # create sample database and set it up as an ODBC datasource
     $ script/bootstrap
